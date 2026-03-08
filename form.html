@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parler à un expert — Avermon Systems</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0C0B09;
+  --paper: #F8F7F5;
+  --stone: #E8E4DC;
+  --dust: #B8B2A7;
+  --smoke: #716D67;
+  --amber: #C9956C;
+  --amber-light: rgba(201,149,108,.1);
+  --amber-deep: #9B6840;
+  --serif: 'Playfair Display', serif;
+  --sans: 'Figtree', sans-serif;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  font-family: var(--sans);
+  background: var(--ink);
+  color: var(--paper);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Grain overlay */
+body::after {
+  content:'';
+  position:fixed; inset:0; z-index:9000; pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+  opacity:.18;
+}
+
+/* Ambient lights */
+.glow-1 {
+  position:fixed; top:-20vh; left:50%; transform:translateX(-50%);
+  width:800px; height:500px;
+  background:radial-gradient(ellipse, rgba(201,149,108,.07) 0%, transparent 65%);
+  pointer-events:none; z-index:0;
+}
+.glow-2 {
+  position:fixed; bottom:-10vh; right:-10vw;
+  width:500px; height:500px;
+  background:radial-gradient(circle, rgba(201,149,108,.04) 0%, transparent 60%);
+  pointer-events:none; z-index:0;
+}
+
+/* ── NAV ── */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  padding:20px 48px;
+  display:flex; align-items:center; justify-content:space-between;
+  border-bottom:1px solid rgba(232,228,220,.06);
+  background:rgba(12,11,9,.85);
+  backdrop-filter:blur(20px);
+}
+.logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+.logo-mark {
+  width:34px; height:34px; border-radius:9px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.06);
+  display:flex; align-items:center; justify-content:center;
+}
+.logo-mark span { font-family:var(--serif); font-size:18px; font-weight:900; color:rgba(255,255,255,.8); }
+.logo-name { font-family:var(--serif); font-size:14px; font-weight:700; color:rgba(255,255,255,.75); }
+.nav-back {
+  display:flex; align-items:center; gap:6px;
+  font-size:13px; color:var(--smoke); text-decoration:none;
+  transition:.2s;
+}
+.nav-back:hover { color:var(--paper); }
+.nav-back::before { content:'←'; }
+
+/* ── LAYOUT ── */
+.wrapper {
+  position:relative; z-index:1;
+  min-height:100vh;
+  padding:140px 48px 80px;
+  display:grid;
+  grid-template-columns:420px 1fr;
+  gap:100px;
+  max-width:1140px;
+  margin:0 auto;
+}
+
+/* ── LEFT STICKY ── */
+.sidebar {
+  position:sticky;
+  top:120px;
+  align-self:start;
+}
+
+.sidebar-badge {
+  display:inline-flex; align-items:center; gap:7px;
+  font-size:11px; font-weight:600; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--amber); margin-bottom:20px;
+}
+.badge-dot { width:6px; height:6px; border-radius:50%; background:var(--amber); animation:blink 2s ease infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+.sidebar h1 {
+  font-family:var(--serif);
+  font-size:clamp(38px, 3.5vw, 54px);
+  font-weight:900;
+  line-height:1.06;
+  color:var(--paper);
+  margin-bottom:20px;
+}
+.sidebar h1 em { color:var(--amber); font-style:italic; font-weight:400; }
+
+.sidebar-desc {
+  font-size:15px; color:var(--dust); line-height:1.85;
+  margin-bottom:40px;
+  border-left:2px solid rgba(201,149,108,.3);
+  padding-left:18px;
+}
+
+.expert-card {
+  display:flex; align-items:center; gap:14px;
+  padding:18px 20px;
+  border:1px solid rgba(232,228,220,.08);
+  border-radius:14px;
+  background:rgba(255,255,255,.025);
+  margin-bottom:24px;
+}
+.expert-avatar {
+  width:44px; height:44px; border-radius:50%;
+  background:linear-gradient(135deg, rgba(201,149,108,.3), rgba(201,149,108,.1));
+  border:1.5px solid rgba(201,149,108,.25);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--serif); font-size:18px; font-weight:700; color:var(--amber);
+  flex-shrink:0;
+}
+.expert-info { flex:1; }
+.expert-name { font-size:13px; font-weight:600; color:var(--paper); margin-bottom:2px; }
+.expert-role { font-size:12px; color:var(--dust); }
+.expert-status { display:flex; align-items:center; gap:5px; margin-top:5px; }
+.expert-status-dot { width:5px; height:5px; border-radius:50%; background:rgba(34,197,94,.8); }
+.expert-status span { font-size:11px; color:rgba(34,197,94,.8); font-weight:500; }
+
+.sidebar-promise {
+  display:flex; flex-direction:column; gap:10px;
+}
+.promise-item {
+  display:flex; align-items:center; gap:10px;
+  font-size:13px; color:var(--dust);
+}
+.promise-dot { width:5px; height:5px; border-radius:50%; background:rgba(201,149,108,.6); flex-shrink:0; }
+
+/* ── FORM ── */
+.form-container {
+  padding-top:8px;
+}
+
+.form-title {
+  font-family:var(--serif);
+  font-size:22px; font-weight:700;
+  color:var(--paper);
+  margin-bottom:6px;
+}
+.form-subtitle {
+  font-size:14px; color:var(--dust);
+  margin-bottom:40px;
+  line-height:1.6;
+}
+
+/* Progress bar */
+.progress-wrap {
+  margin-bottom:44px;
+}
+.progress-steps {
+  display:flex; gap:0;
+  margin-bottom:10px;
+}
+.pstep {
+  flex:1; text-align:center;
+  font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--smoke); position:relative; padding-bottom:12px;
+}
+.pstep::after {
+  content:'';
+  position:absolute; bottom:0; left:0; right:0;
+  height:2px; background:rgba(232,228,220,.1);
+  border-radius:2px;
+}
+.pstep.active { color:var(--amber); }
+.pstep.active::after { background:var(--amber); }
+.pstep.done { color:rgba(34,197,94,.7); }
+.pstep.done::after { background:rgba(34,197,94,.5); }
+
+/* Form steps */
+.fstep { display:none; flex-direction:column; gap:22px; animation:fadeUp .35s ease both; }
+.fstep.visible { display:flex; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+/* Field styles */
+.field { display:flex; flex-direction:column; gap:8px; }
+.field label {
+  font-size:11px; font-weight:700; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--smoke);
+}
+.field label span { font-weight:400; letter-spacing:0; text-transform:none; color:rgba(113,109,103,.6); margin-left:4px; }
+.field input, .field textarea, .field select {
+  padding:15px 18px;
+  border:1.5px solid rgba(232,228,220,.1);
+  border-radius:14px;
+  background:rgba(255,255,255,.04);
+  color:var(--paper);
+  font-family:var(--sans); font-size:14px;
+  outline:none; transition:.25s;
+  width:100%;
+}
+.field input::placeholder, .field textarea::placeholder { color:rgba(113,109,103,.7); }
+.field input:focus, .field textarea:focus {
+  border-color:rgba(201,149,108,.45);
+  background:rgba(201,149,108,.04);
+  box-shadow:0 0 0 4px rgba(201,149,108,.06);
+}
+.field input.error { border-color:rgba(239,68,68,.4); }
+.field-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.field textarea { resize:vertical; min-height:90px; }
+
+/* Chip buttons */
+.chip-group { display:flex; flex-wrap:wrap; gap:10px; }
+.chip {
+  padding:10px 18px;
+  border-radius:100px;
+  border:1.5px solid rgba(232,228,220,.12);
+  background:rgba(255,255,255,.03);
+  color:var(--dust);
+  font-family:var(--sans); font-size:13px; font-weight:500;
+  cursor:pointer; transition:.2s;
+  user-select:none;
+}
+.chip:hover { border-color:rgba(201,149,108,.35); color:var(--paper); }
+.chip.active {
+  background:rgba(201,149,108,.12);
+  border-color:var(--amber);
+  color:var(--amber);
+  font-weight:600;
+}
+
+/* Question block */
+.qblock {
+  border:1px solid rgba(232,228,220,.08);
+  border-radius:16px;
+  padding:24px;
+  background:rgba(255,255,255,.02);
+}
+.qblock-label {
+  font-size:15px; font-weight:600; color:var(--paper);
+  margin-bottom:6px;
+}
+.qblock-sub {
+  font-size:13px; color:var(--dust); line-height:1.6;
+  margin-bottom:18px;
+}
+
+/* Nav buttons */
+.form-nav { display:flex; gap:10px; margin-top:8px; }
+.btn-primary {
+  flex:1; padding:16px;
+  background:var(--amber); color:var(--ink);
+  border:none; border-radius:100px;
+  font-family:var(--sans); font-size:14px; font-weight:700;
+  cursor:pointer; transition:.2s;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+}
+.btn-primary:hover { background:var(--amber-deep); color:#fff; transform:translateY(-1px); }
+.btn-primary:disabled { opacity:.3; cursor:not-allowed; transform:none; }
+.btn-ghost {
+  padding:16px 24px;
+  background:transparent;
+  border:1.5px solid rgba(232,228,220,.12);
+  border-radius:100px;
+  color:var(--smoke); font-family:var(--sans); font-size:13px; font-weight:500;
+  cursor:pointer; transition:.2s;
+}
+.btn-ghost:hover { border-color:var(--dust); color:var(--paper); }
+
+/* Reassurance note */
+.reassurance {
+  margin-top:4px;
+  padding:14px 18px;
+  border-radius:12px;
+  border:1px solid rgba(201,149,108,.15);
+  background:rgba(201,149,108,.05);
+  font-size:12px; color:var(--dust); line-height:1.7;
+}
+.reassurance strong { color:var(--amber); }
+
+/* ── SUCCESS ── */
+.success-screen {
+  display:none;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  padding:20px 0;
+  animation:fadeUp .5s ease both;
+}
+.success-icon {
+  width:80px; height:80px; border-radius:50%;
+  border:2px solid rgba(34,197,94,.35);
+  background:rgba(34,197,94,.08);
+  display:flex; align-items:center; justify-content:center;
+  font-size:32px; font-weight:300; color:rgba(34,197,94,.9);
+  font-family:var(--serif);
+  margin:0 auto 28px;
+  animation:scaleIn .5s .1s ease both;
+}
+@keyframes scaleIn { from{transform:scale(0)} to{transform:scale(1)} }
+.success-title { font-family:var(--serif); font-size:38px; font-weight:700; margin-bottom:12px; }
+.success-sub { font-size:16px; color:var(--dust); line-height:1.8; max-width:420px; margin:0 auto 36px; }
+.success-next {
+  width:100%; max-width:420px;
+  padding:20px;
+  background:var(--amber); color:var(--ink);
+  border:none; border-radius:100px;
+  font-family:var(--sans); font-size:15px; font-weight:700;
+  cursor:pointer; transition:.2s;
+  text-decoration:none;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+}
+.success-next:hover { background:var(--amber-deep); color:#fff; transform:translateY(-2px); }
+.success-note { margin-top:14px; font-size:12px; color:var(--smoke); }
+
+/* ── RESPONSIVE ── */
+@media (max-width:860px) {
+  nav { padding:16px 20px; }
+  .wrapper { grid-template-columns:1fr; gap:40px; padding:110px 20px 60px; }
+  .sidebar { position:static; }
+  .field-row { grid-template-columns:1fr; }
+  .sidebar h1 { font-size:36px; }
+}
+</style>
+</head>
+<body>
+
+<div class="glow-1"></div>
+<div class="glow-2"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="logo">
+    <div class="logo-mark"><span>A</span></div>
+    <span class="logo-name">Avermon Systems</span>
+  </a>
+  <a href="index.html" class="nav-back">Retour au site</a>
+</nav>
+
+<div class="wrapper">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-badge"><span class="badge-dot"></span> Diagnostic gratuit · 30 min</div>
+    <h1>Un expert<br><em>vous rappelle</em><br>personnellement</h1>
+    <p class="sidebar-desc">Remplissez ce formulaire en 2 minutes. Un expert Avermon Systems analyse votre situation en amont et vous contacte pour un échange concret, sans discours générique.</p>
+
+    <div class="expert-card">
+      <div class="expert-avatar">A</div>
+      <div class="expert-info">
+        <div class="expert-name">Expert Avermon Systems</div>
+        <div class="expert-role">Spécialiste automatisation · Restauration</div>
+        <div class="expert-status">
+          <div class="expert-status-dot"></div>
+          <span>Disponible cette semaine</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-promise">
+      <div class="promise-item"><div class="promise-dot"></div> Analyse préparée avant l'appel</div>
+      <div class="promise-item"><div class="promise-dot"></div> Réponse sous 24 heures ouvrées</div>
+      <div class="promise-item"><div class="promise-dot"></div> Sans engagement, sans jargon</div>
+      <div class="promise-item"><div class="promise-dot"></div> Vos données restent confidentielles</div>
+    </div>
+  </aside>
+
+  <!-- FORM -->
+  <main class="form-container">
+
+    <!-- Progress -->
+    <div class="progress-wrap">
+      <div class="progress-steps">
+        <div class="pstep active" id="ps1">Votre profil</div>
+        <div class="pstep" id="ps2">Votre activité</div>
+        <div class="pstep" id="ps3">Vos besoins</div>
+      </div>
+    </div>
+
+    <!-- STEP 1 : Coordonnées -->
+    <div class="fstep visible" id="step1">
+      <div>
+        <div class="form-title">Faisons connaissance</div>
+        <div class="form-subtitle">Ces informations permettent à notre expert de vous identifier et de vous recontacter.</div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Prénom *</label>
+          <input type="text" id="f-prenom" placeholder="Marie" autocomplete="given-name">
+        </div>
+        <div class="field">
+          <label>Nom *</label>
+          <input type="text" id="f-nom" placeholder="Dupont" autocomplete="family-name">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Adresse email *</label>
+        <input type="email" id="f-email" placeholder="marie@monrestaurant.fr" autocomplete="email">
+      </div>
+
+      <div class="field">
+        <label>Téléphone * <span>(notre expert vous appellera sur ce numéro)</span></label>
+        <input type="tel" id="f-tel" placeholder="+33 6 00 00 00 00" autocomplete="tel">
+      </div>
+
+      <div class="form-nav">
+        <button class="btn-primary" onclick="goStep(2)">Continuer →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2 : Type établissement -->
+    <div class="fstep" id="step2">
+      <div>
+        <div class="form-title">Votre établissement</div>
+        <div class="form-subtitle">Cela nous permet de préparer un diagnostic adapté à votre type d'activité.</div>
+      </div>
+
+      <div class="field">
+        <label>Nom de votre établissement <span>(optionnel)</span></label>
+        <input type="text" id="f-etab" placeholder="Le Bistrot du Coin, Paris 11e">
+      </div>
+
+      <div class="qblock">
+        <div class="qblock-label">Quel type d'établissement ?</div>
+        <div class="qblock-sub">Sélectionnez celui qui correspond le mieux à votre activité.</div>
+        <div class="chip-group" id="chips-type">
+          <div class="chip" onclick="toggleChip(this, 'type', true)">Bistrot / Brasserie</div>
+          <div class="chip" onclick="toggleChip(this, 'type', true)">Gastronomique</div>
+          <div class="chip" onclick="toggleChip(this, 'type', true)">Fast casual</div>
+          <div class="chip" onclick="toggleChip(this, 'type', true)">Bar / Cocktails</div>
+          <div class="chip" onclick="toggleChip(this, 'type', true)">Hôtel-restaurant</div>
+          <div class="chip" onclick="toggleChip(this, 'type', true)">Traiteur / Événementiel</div>
+          <div class="chip" onclick="toggleChip(this, 'type', true)">Autre</div>
+        </div>
+      </div>
+
+      <div class="qblock">
+        <div class="qblock-label">Combien de couverts par service ?</div>
+        <div class="qblock-sub">Une indication approximative suffit.</div>
+        <div class="chip-group" id="chips-couverts">
+          <div class="chip" onclick="toggleChip(this, 'couverts', true)">Moins de 30</div>
+          <div class="chip" onclick="toggleChip(this, 'couverts', true)">30 – 60</div>
+          <div class="chip" onclick="toggleChip(this, 'couverts', true)">60 – 120</div>
+          <div class="chip" onclick="toggleChip(this, 'couverts', true)">Plus de 120</div>
+        </div>
+      </div>
+
+      <div class="form-nav">
+        <button class="btn-ghost" onclick="goStep(1)">← Retour</button>
+        <button class="btn-primary" onclick="goStep(3)">Continuer →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3 : Besoins -->
+    <div class="fstep" id="step3">
+      <div>
+        <div class="form-title">Ce qui vous prend du temps</div>
+        <div class="form-subtitle">Soyez aussi précis ou vague que vous voulez — notre expert est là pour comprendre.</div>
+      </div>
+
+      <div class="qblock">
+        <div class="qblock-label">Qu'est-ce qui vous prend le plus de temps aujourd'hui ?</div>
+        <div class="qblock-sub">Sélectionnez tout ce qui s'applique. Plusieurs réponses possibles.</div>
+        <div class="chip-group" id="chips-temps">
+          <div class="chip" onclick="toggleChip(this, 'temps', false)">Décrocher le téléphone en service</div>
+          <div class="chip" onclick="toggleChip(this, 'temps', false)">Gérer les réservations</div>
+          <div class="chip" onclick="toggleChip(this, 'temps', false)">Réduire les no-shows</div>
+          <div class="chip" onclick="toggleChip(this, 'temps', false)">Répondre aux messages clients</div>
+          <div class="chip" onclick="toggleChip(this, 'temps', false)">Fidéliser mes clients</div>
+          <div class="chip" onclick="toggleChip(this, 'temps', false)">Publier sur les réseaux sociaux</div>
+          <div class="chip" onclick="toggleChip(this, 'temps', false)">Gérer les avis en ligne</div>
+          <div class="chip" onclick="toggleChip(this, 'temps', false)">Suivre mes performances</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Autre chose à nous dire ? <span>(optionnel)</span></label>
+        <textarea id="f-message" placeholder="Ex : On est souvent en sous-effectif le week-end et on manque beaucoup d'appels. On voudrait aussi relancer les clients qui ne reviennent pas..."></textarea>
+      </div>
+
+      <div class="reassurance">
+        <strong>Pas d'inquiétude si votre besoin vous semble complexe ou atypique.</strong> Notre expert est là pour évaluer ce qui est réellement faisable dans votre situation — pas pour vous vendre quelque chose à tout prix.
+      </div>
+
+      <div class="form-nav">
+        <button class="btn-ghost" onclick="goStep(2)">← Retour</button>
+        <button class="btn-primary" onclick="submitForm()">Envoyer ma demande →</button>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="success-screen" id="success">
+      <div class="success-icon">✓</div>
+      <h2 class="success-title">Demande reçue.</h2>
+      <p class="success-sub">Un expert Avermon Systems va analyser votre situation et vous recontactera personnellement sous 24 heures. Pour aller plus vite, réservez dès maintenant votre créneau d'appel.</p>
+      <a href="booking.html" class="success-next">Choisir mon créneau d'appel →</a>
+      <p class="success-note">Créneau réservable en 2 minutes · Lundi – Samedi 9h–17h30</p>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ── Chip selection ──
+function toggleChip(el, group, single) {
+  if (single) {
+    el.closest('.chip-group').querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  }
+  el.classList.toggle('active');
+}
+
+// ── Step navigation ──
+function goStep(n) {
+  // Validate step 1
+  if (n === 2) {
+    const prenom = document.getElementById('f-prenom').value.trim();
+    const nom = document.getElementById('f-nom').value.trim();
+    const email = document.getElementById('f-email').value.trim();
+    const tel = document.getElementById('f-tel').value.trim();
+    let ok = true;
+    ['f-prenom','f-nom','f-email','f-tel'].forEach(id => {
+      const el = document.getElementById(id);
+      if (!el.value.trim()) { el.classList.add('error'); ok = false; }
+      else el.classList.remove('error');
+    });
+    if (!ok) return;
+  }
+
+  document.querySelectorAll('.fstep').forEach(s => s.classList.remove('visible'));
+  document.getElementById('step' + n).classList.add('visible');
+
+  // Update progress
+  ['ps1','ps2','ps3'].forEach((id, i) => {
+    const el = document.getElementById(id);
+    el.className = 'pstep';
+    if (i + 1 < n) el.classList.add('done');
+    else if (i + 1 === n) el.classList.add('active');
+  });
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Submit ──
+function submitForm() {
+  document.querySelectorAll('.fstep').forEach(s => s.classList.remove('visible'));
+  const success = document.getElementById('success');
+  success.style.display = 'flex';
+
+  // Mark all steps done
+  ['ps1','ps2','ps3'].forEach(id => {
+    document.getElementById(id).className = 'pstep done';
+  });
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Remove error state on input
+document.querySelectorAll('input').forEach(el => {
+  el.addEventListener('input', () => el.classList.remove('error'));
+});
+</script>
+</body>
+</html>
