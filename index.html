@@ -3758,7 +3758,7 @@ footer .logo-sub-rest { color: rgba(255,255,255,.35); }
   </ul>
   <div class="nav-r">
     <a href="#offres" class="btn-ghost">Voir les offres</a>
-    <a href="#contact" class="btn-solid">Diagnostic gratuit →</a>
+    <a href="https://calendar.app.google/qpK5TVJH8vY8gACa8" target="_blank" class="btn-solid">Diagnostic gratuit →</a>
   </div>
 </nav>
 
@@ -3770,7 +3770,7 @@ footer .logo-sub-rest { color: rgba(255,255,255,.35); }
     <p class="hero-desc">Agent vocal 24h/24, collecte de data clients, marketing automatisé — trois outils IA taillés pour les restaurateurs qui veulent reprendre le contrôle sans recruter.</p>
     <div class="hero-ctas">
       <a href="#agents" class="btn-primary">Découvrir les agents →</a>
-      <a href="#contact" class="btn-secondary">Réserver un diagnostic</a>
+      <a href="https://calendar.app.google/qpK5TVJH8vY8gACa8" target="_blank" class="btn-secondary">Réserver un diagnostic</a>
     </div>
   </div>
   <div class="hero-visual">
@@ -4727,7 +4727,7 @@ footer .logo-sub-rest { color: rgba(255,255,255,.35); }
             <li>Appel ou visio, à votre convenance</li>
             <li>Compte-rendu écrit envoyé dans la journée</li>
           </ul>
-          <a href="#contact" class="ps2-cta">Réserver mon diagnostic gratuit →</a>
+          <a href="https://calendar.app.google/qpK5TVJH8vY8gACa8" target="_blank" class="ps2-cta">Réserver mon diagnostic gratuit →</a>
         </div>
         <div class="ps2-right">
           <div class="ps2-visual ps2-v0">
@@ -5083,8 +5083,17 @@ footer .logo-sub-rest { color: rgba(255,255,255,.35); }
 <section class="cta-sec rv" id="contact">
   <h2 class="cta-h">Prêt à laisser<br><em>l'IA travailler</em><br>à votre place ?</h2>
   <p class="cta-p">30 minutes de diagnostic. Gratuit. Sans engagement. On vous dit exactement ce qu'on peut automatiser chez vous — et ce que ça vous rapporte concrètement.</p>
-  <div class="cta-btns">
-    <a href="mailto:contact@avermon.systems" class="btn-cw">Réserver un diagnostic →</a>
+
+  <!-- Calendly inline widget -->
+  <div style="margin: 40px auto 0; max-width: 900px; border-radius: 16px; overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,.35);">
+    <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+    <div class="calendly-inline-widget"
+         data-url="https://calendly.com/avermonsystems/30min?background_color=0C0B09&text_color=F8F7F5&primary_color=C9956C"
+         style="min-width:320px;height:700px;"></div>
+    <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+  </div>
+
+  <div class="cta-btns" style="margin-top: 32px;">
     <a href="#agents" class="btn-cg">Revoir les agents</a>
   </div>
 </section>
@@ -5108,10 +5117,10 @@ footer .logo-sub-rest { color: rgba(255,255,255,.35); }
   </div>
   <div><div class="ft-h">Agents</div><ul class="ft-ul"><li><a href="#a1">Agent 1 · Réception d'appels</a></li><li><a href="#a2">Agent 2 · Data · Analyse</a></li><li><a href="#a3">Agent 3 · Marketing Digital</a></li><li><a href="#offres">Paniers & tarifs</a></li></ul></div>
   <div><div class="ft-h">Secteurs</div><ul class="ft-ul"><li><a href="#secteurs">Bistrots & brasseries</a></li><li><a href="#secteurs">Gastronomiques</a></li><li><a href="#secteurs">Fast casual & chaînes</a></li><li><a href="#secteurs">Bars & cocktails</a></li></ul></div>
-  <div><div class="ft-h">Contact</div><ul class="ft-ul"><li><a href="#contact">Diagnostic gratuit</a></li><li><a href="mailto:contact@avermon.systems">contact@avermon.systems</a></li><li><a href="#">LinkedIn</a></li><li><a href="#faq">FAQ</a></li></ul></div>
+  <div><div class="ft-h">Contact</div><ul class="ft-ul"><li><a href="#contact">Diagnostic gratuit</a></li><li><a href="/cdn-cgi/l/email-protection#43202c2d3722203703223526312e2c2d6d303a3037262e30"><span class="__cf_email__" data-cfemail="6f0c00011b0e0c1b2f0e190a1d020001411c161c1b0a021c">[email&#160;protected]</span></a></li><li><a href="#">LinkedIn</a></li><li><a href="#faq">FAQ</a></li></ul></div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ── Scroll reveal ──────────────────────────────────────────
 const obs = new IntersectionObserver(entries => {
   entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);} });
@@ -5248,17 +5257,4 @@ document.querySelectorAll('.stat-num[data-target]').forEach(el => counterObs.obs
 (function(){
   const btns = document.querySelectorAll('.cfg-btn');
   const panels = document.querySelectorAll('.cfg-panel');
-  if(!btns.length) return;
-
-  function activate(idx) {
-    btns.forEach((b,i) => b.classList.toggle('active', i === idx));
-    panels.forEach((p,i) => p.classList.toggle('active', i === idx));
-  }
-
-  btns.forEach((b, i) => b.addEventListener('click', () => activate(i)));
-  activate(0);
-})();
-
-</script>
-</body>
-</html>
+  if(!btns.length) retu
